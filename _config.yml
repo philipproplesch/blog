@@ -7,12 +7,12 @@ title: philip { proplesch }
 subtitle:
 description:
 author: Philip Proplesch
-language: en-US
-timezone:
+language: en
+timezone: America/Toronto
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://beta.philipproplesch.de
+url: http://philipproplesch.de
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -64,6 +64,12 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: landscape
+
+# Feed configuration
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
