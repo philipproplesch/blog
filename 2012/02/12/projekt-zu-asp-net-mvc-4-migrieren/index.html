@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Projekt zu ASP.NET MVC 4 migrieren | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Projekt zu ASP.NET MVC 4 migrieren</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2012-02-12T05:00:00.000Z"> Sunday, February 12th 2012</time></span><p>Heute Vormittag hat Microsoft im Rahmen der <a href="http://www.microsoft.com/belux/techdays/2012" target="_blank" rel="external">TechDays in Belgien</a> die Beta-Version von <a href="http://www.asp.net/mvc/mvc4" target="_blank" rel="external">ASP.NET MVC 4</a> veröffentlicht. Allem Anschein nach beinhaltet diese Version eine <a href="http://forums.asp.net/t/1770472.aspx/1?ASP+NET+MVC+4+Beta+Released" target="_blank" rel="external">Go-Live-Lizenz</a>, sodass sie auch problemlos in Produktivszenarien eingesetzt werden kann.</p>
+<p>Um eine bestehende ASP.NET MVC-Applikation auf die neue Version zu aktualisieren sind folgende Schritte nötig:</p>
+<p>Die web.config im Root-Verzeichnis der Applikation muss wie folgt erweitert bzw. modifiziert werden:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;configuration&gt;
+  &lt;appSettings&gt;
+    &lt;add key=&quot;webpages:Version&quot; value=&quot;2.0.0.0&quot; &gt;&lt;/add&gt;
+    &lt;add key=&quot;webpages:Enabled&quot; value=&quot;true&quot; &gt;&lt;/add&gt;
+    &lt;add key=&quot;PreserveLoginUrl&quot; value=&quot;true&quot; &gt;&lt;/add&gt;
+  &lt;/appSettings&gt;
+  &lt;runtime&gt;
+    &lt;assemblyBinding xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;&gt;
+      &lt;dependentAssembly&gt;
+        &lt;assemblyIdentity name=&quot;System.Web.Helpers&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; &gt;&lt;/assemblyIdentity&gt;
+        &lt;bindingRedirect oldVersion=&quot;1.0.0.0-2.0.0.0&quot; newVersion=&quot;2.0.0.0&quot; &gt;&lt;/bindingRedirect&gt;
+      &lt;/dependentAssembly&gt;
+      &lt;dependentAssembly&gt;
+        &lt;assemblyIdentity name=&quot;System.Web.Mvc&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; &gt;&lt;/assemblyIdentity&gt;
+        &lt;bindingRedirect oldVersion=&quot;1.0.0.0-4.0.0.0&quot; newVersion=&quot;4.0.0.0&quot; &gt;&lt;/bindingRedirect&gt;
+      &lt;/dependentAssembly&gt;
+      &lt;dependentAssembly&gt;
+        &lt;assemblyIdentity name=&quot;System.Web.WebPages&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; &gt;&lt;/assemblyIdentity&gt;
+        &lt;bindingRedirect oldVersion=&quot;1.0.0.0-2.0.0.0&quot; newVersion=&quot;2.0.0.0&quot; &gt;&lt;/bindingRedirect&gt;
+      &lt;/dependentAssembly&gt;
+     &lt;/assemblyBinding&gt;
+  &lt;/runtime&gt;
+&lt;/configuration&gt;
+</code></pre><p>In ALLEN web.config-Dateien, also auch jener im “Views”-Verzeichnis und ggfs. weiteren hinzugefügten, muss die Major-Version der folgenden Assemblies um eine Version inkrementiert werden:</p>
+<pre><code>System.Web.Mvc, Version=3.0.0.0
+System.Web.WebPages, Version=1.0.0.0
+System.Web.Helpers, Version=1.0.0.0
+System.Web.WebPages.Razor, Version=1.0.0.0
+
+System.Web.Mvc, Version=4.0.0.0
+System.Web.WebPages, Version=2.0.0.0
+System.Web.Helpers, Version=2.0.0.0
+System.Web.WebPages.Razor, Version=2.0.0.0
+</code></pre><p>Die MVC-relevanten Projektreferenzen müssen auf die neueste Version (in Klammern hinter dem Assemblynamen) aktualisiert werden:</p>
+<pre><code>System.Web.Mvc (4.0.0.0)
+System.Web.WebPages (2.0.0.0)
+System.Web.Razor (2.0.0.0)
+System.Web.WebPages.Deployment (2.0.0.0)
+System.Web.WebPages.Razor (2.0.0.0)
+</code></pre><p>Abschließend muss der Projekttyp der Applikation in der Projektdatei angepasst werden. Hierzu einfach innerhalb des Knotens “ProjectTypeGuids”die Guid <code>{E53F8FEA-EAE0-44A6-8774-FFD645390401}</code> durch <code>{E3E379DF-F4C6-4180-9B81-6769533ABE47}</code> ersetzen.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

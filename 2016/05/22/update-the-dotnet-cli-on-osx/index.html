@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Update the dotnet CLI on OSX | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Update the dotnet CLI on OSX</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2016-05-22T04:00:00.000Z"> Sunday, May 22nd 2016</time></span><p>Microsoft has recently released new versions of .NET Core, ASP.NET Core and the development tools.</p>
+<p>If you were playing around with earlier builds of the <code>dotnet</code> CLI and you want <em>(it is not really a question of whether you want or not ;))</em> to upgrade to the new version you have to remove all traces of any installed versions first.</p>
+<p>Luckily Microsoft provides a simple script that we can execute as follows:</p>
+<pre><code># Get elevated privileges
+sudo su
+
+# Download and execute the uninstall script
+curl -s https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/uninstall/dotnet-uninstall-pkgs.sh | bash
+</code></pre><p>Afterwards you can <a href="https://dotnetcli.blob.core.windows.net/dotnet/preview/Installers/Latest/dotnet-dev-osx-x64.latest.pkg" target="_blank" rel="external">download and install the latest package</a> which is linked on the <a href="https://github.com/dotnet/cli/" target="_blank" rel="external">GitHub page</a>.</p>
+<p>Executing <code>dotnet --info</code> or <code>dotnet --version</code> should return the correct version number now:</p>
+<pre><code>dotnet --info
+.NET Command Line Tools (1.0.0-preview2-002820)
+
+Product Information:
+Version:            1.0.0-preview2-002820
+Commit SHA-1 hash:  d307537eb8
+
+Runtime Environment:
+OS Name:     Mac OS X
+OS Version:  10.11
+OS Platform: Darwin
+RID:         osx.10.11-x64
+</code></pre></article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

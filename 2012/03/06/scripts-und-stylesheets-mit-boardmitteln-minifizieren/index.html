@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Scripts und Stylesheets mit Boardmitteln minifizieren | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Scripts und Stylesheets mit Boardmitteln minifizieren</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2012-03-06T05:00:00.000Z"> Tuesday, March 6th 2012</time></span><p>Ich möchte im folgenden NICHT über die Gründe schreiben, warum es sinnvoll ist Scripts oder Stylesheets zusammenzufassen. Macht es einfach! ;)</p>
+<p>Mit der <a href="http://www.asp.net/mvc/mvc4" target="_blank" rel="external">Beta von ASP.NET MVC 4</a> (funktioniert bestimmt auch mit WebForms, aber wer will das schon?!) wurde der Namespace <code>System.Web.Optimization</code> (<a href="https://nuget.org/packages/Microsoft.Web.Optimization" target="_blank" rel="external">Microsoft.Web.Optimization via NuGet</a>) eingeführt und somit die Möglichkeit geschaffen JavaScript- und CSS-Dateien in ASP.NET-Anwendungen zu minifizieren und zu kombinieren (ähnlich wie <a href="https://github.com/jetheredge/SquishIt" target="_blank" rel="external">SquishIt</a>, <a href="https://github.com/buunguyen/combres" target="_blank" rel="external">Combres</a> oder <a href="http://getcassette.net/" target="_blank" rel="external">Casette</a>).</p>
+<p>Das <code>Application_Start</code>-Event wurde in den neuen Templates um die folgende Zeile erweitert:</p>
+<pre><code>protected void Application_Start()
+{
+    BundleTable.Bundles.RegisterTemplateBundles();
+}
+</code></pre><p>Die Methode <code>RegisterTemplateBundles()</code> sorgt dafür, dass alle mitgelieferten Scripts (jquery, jquery-ui, jquery-validate, modernizr, …) und Stylesheets (Site.css) in den “Dateien” <code>~/Content/css</code> und <code>~/Scripts/js</code> zusammengefasst werden. Im Layout bzw. in der View erfolgt die Enbindung wie folgt:</p>
+<p>Um ein Bundle im Nachhinein zu erweitern/modifizieren besteht die Möglichkeit über den virtuellen Pfad auf selbiges zuzugreifen:</p>
+<pre><code>protected void Application_Start()
+{
+    BundleTable.Bundles.RegisterTemplateBundles();
+
+    var scripts = BundleTable.Bundles.GetBundleFor(&quot;~/Scripts/js&quot;);
+
+    // Einzelne Datei hinzufügen
+    scripts.AddFile(&quot;~/Scripts/knockout-2.0.0.js&quot;);
+
+    // Alle *.js-Dateien im Ordner /Scripts/Subfolder und dessen Unterverzeichnissen hinzufügen
+    scripts.AddDirectory(&quot;~/Scripts/Subfolder&quot;, &quot;*.js&quot;, true);
+}
+</code></pre><p>Als Alternative zu <code>RegisterTemplateBundles()</code> kann auch <code>EnableDefaultBundles()</code> verwendet werden. Hierbei werden die Dateien nicht explizit über den Namen zusammengefasst, sondern über die Dateierweiterung (<em>.js und </em>.css).</p>
+<p>Bei der Verwendung von <code>RegisterTemplateBundles()</code> oder <code>EnableDefaultBundles()</code> werden die Dateien IMMER minifiziert und kombiniert. Falls die Minifizierung während der Entwicklungszeit verhindert werden soll (was zu Debuggingzwecken unter Umständen ganz hilfreich sein könnte ), sollte man mal schauen was <a href="http://codebetter.com/johnpetersen/2012/03/06/asp-net-mvc-4-beta-bundling-and-minification-dymystified/" target="_blank" rel="external">John Petersen heute zu diesem Thema geschrieben hat</a>. Außerdem ist in dem Codebeispiel zu sehen wie Bundles selbst definiert werden können.</p>
+<p>Standardmäßig werden die folgenden Dateien von der Kombinierung ausgeschlossen:</p>
+<pre><code>IgnoreList.Ignore(&quot;*.intellisense.js&quot;);
+IgnoreList.Ignore(&quot;*-vsdoc.js&quot;);
+IgnoreList.Ignore(&quot;*.debug.js&quot;);
+</code></pre><p>Weitere Informationen zu diesem Thema gibt es z.B. <a href="http://weblogs.asp.net/scottgu/archive/2011/11/27/new-bundling-and-minification-support-asp-net-4-5-series.aspx" target="_blank" rel="external">bei Scott Guthrie</a> oder auf den <a href="http://www.asp.net/web-forms/videos/aspnet-vnext/aspnet-vnext-videos-bundling-and-minification" target="_blank" rel="external">offiziellen ASP.NET-Seiten</a>.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Atlassian Stash - Add Pull Request reviewers automatically | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Atlassian Stash - Add Pull Request reviewers automatically</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2014-04-26T04:00:00.000Z"> Saturday, April 26th 2014</time></span><p>Though there are solutions to configure predefined Pull Request reviewers for a project in <a href="https://www.atlassian.com/software/stash" target="_blank" rel="external">Stash</a>, this might become handy for people without the permissions to configure such a thing.</p>
+<pre><code>// ==UserScript==
+// @name       Set reviewers for a pull request in Stash
+// @namespace  http://foo.bar/
+// @version    0.1
+// @description  
+// @match      */projects/*/repos/*/pull-requests?create
+// @copyright
+// ==/UserScript==
+
+document.getElementById(&apos;reviewers&apos;).value = &apos;johndoe|!|maxmustermann&apos;;    
+alert(&apos;Reviewers added...&apos;);
+</code></pre><p>You just have to add the user names of the reviewers separated by <code>|!|</code>.</p>
+<p>This will also work as a <a href="http://mrcoles.com/bookmarklet/" target="_blank" rel="external">bookmarklet</a>.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

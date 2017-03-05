@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>ngRepeat without parent element | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">ngRepeat without parent element</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2014-03-30T04:00:00.000Z"> Sunday, March 30th 2014</time></span><p>I’m working on an <a href="http://angularjs.org/" target="_blank" rel="external">AngularJS</a>-driven Single Page Application for a couple of months now and have to admit that it’s a framework I really enjoy working with. That does not happen very often ;)</p>
+<hr>
+<p>Imagine you want to repeat a list of a certain type (posts, comments, whatever).</p>
+<p>With AngularJS you usually make use of the built-in <a href="http://docs.angularjs.org/api/ng/directive/ngRepeat" target="_blank" rel="external">ngRepeat directive</a> as in the following example:</p>
+<pre><code>&lt;article ng-repeat=&quot;post in posts&quot;&gt;
+  &lt;h1 ng-bind=&quot;post.title&quot; /&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+</code></pre><p>The ouput will look similar to this:</p>
+<pre><code>&lt;article&gt;
+  &lt;h1&gt;Hello world!&lt;/h1&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+
+&lt;article&gt;
+  &lt;h1&gt;AngularJS is awesome!&lt;/h1&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+
+&lt;article&gt;
+  &lt;h1&gt;I see dead people :/&lt;/h1&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+
+&lt;!-- and so on... --&gt;
+</code></pre><p>As you might noticed the ngRepeat directive sits on the <code>&lt;article /&gt;</code> element which is great in most cases, but could be a problem if you don’t have a parent element.</p>
+<p>Let’s take a <a href="http://html5doctor.com/the-dl-element/" target="_blank" rel="external">definition list</a> with the following markup:</p>
+<pre><code>&lt;dl&gt;
+  &lt;dt&gt;Foo&lt;/dt&gt;
+  &lt;dd&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit.&lt;/dd&gt;
+  &lt;dt&gt;Bar&lt;/dt&gt;
+  &lt;dd&gt;Iste aperiam nesciunt enim dolorum dolores labore necessitatibus dolor?&lt;/dd&gt;
+&lt;/dl&gt;
+</code></pre><p><code>&lt;dt /&gt;</code> and <code>&lt;dd /&gt;</code> are the elements that should be repeated now, but putting the ngRepeat on the <code>&lt;dl /&gt;</code> wouldn’t make much sense because it will generate <em>n</em> separate lists (n = length of array).</p>
+<p>Fortunately there’s <del>an app</del> a <a href="http://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points" target="_blank" rel="external">solution for this in the framework</a> :)</p>
+<pre><code>&lt;dl&gt;
+  &lt;dt ng-repeat-start=&quot;definition in definitions&quot; ng-bind=&quot;definition.title&quot;&gt;&lt;/dt&gt;
+  &lt;dd ng-repeat-end=&quot;&quot; ng-bind=&quot;definition.text&quot;&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+</code></pre><p>Et voilà! See it in action on <a href="http://jsfiddle.net/philipproplesch/SHjy9/" target="_blank" rel="external">JSFiddle</a>.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

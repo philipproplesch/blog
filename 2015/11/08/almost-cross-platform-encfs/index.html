@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Almost cross-platform EncFS | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Almost cross-platform EncFS</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2015-11-08T05:00:00.000Z"> Sunday, November 8th 2015</time></span><p>As most people I have a whole bunch of data stored on <em>&lt;insert your preferred cloud storage provider here&gt;</em> and naturally some of these files contain sensitive data.</p>
+<p>I am not paranoid and I am definitely not the kind of person who wears a tinfoil hat, but in times where pretty much every device is connected to the internet I sleep better knowing that my data belongs to me &mdash; <strong>only me!</strong></p>
+<h2 id="The-easy-way"><a href="#The-easy-way" class="headerlink" title="The easy way"></a>The easy way</h2><p>The all-in-one solution would be <a href="https://www.boxcryptor.com/en" target="_blank" rel="external">Boxcryptor</a> which makes EncFS available to Windows and OSX users and even provides apps for OS X and Android.</p>
+<h2 id="The-hard-way"><a href="#The-hard-way" class="headerlink" title="The hard way"></a>The hard way</h2><p>Honestly I don’t really need to access the files on the go, so smartphone or tablet access is of no priority for me right now.</p>
+<h3 id="On-OS-X"><a href="#On-OS-X" class="headerlink" title="On OS X"></a>On OS X</h3><p>In order to get EncFS up and running on OS X make sure that <a href="http://brew.sh/" target="_blank" rel="external">Homebrew</a> is installed on your machine.</p>
+<p>Execute the following commands in a Terminal window and you are good to go:</p>
+<pre><code>brew update
+brew install homebrew/fuse/encfs
+</code></pre><p>After this you can start to use the <code>encfs</code> command:</p>
+<pre><code>encfs ~/path/to/my/encrypted/data ~/decrypted
+</code></pre><p>If you run this for the first time it will guide you through the initialization process. When you went through this before you just have to enter your password and can browse your files in <code>~/decrypted</code>.</p>
+<p>When working with the decrpyted files in your folder you might run into this error when you try to open a file.</p>
+<p><img src="/images/Screen-Shot-2015-11-08-at-7-13-49-PM.png" alt="File is damaged and can&#39;t be opened"></p>
+<p>Don’t worry! Your file will be most likely OK, but OS X has added a flag which prevents it from getting opened. Running the following once in a while should resolve the issue:</p>
+<pre><code>xattr -r -d com.apple.quarantine ~/decrypted
+</code></pre><h3 id="On-Windows"><a href="#On-Windows" class="headerlink" title="On Windows"></a>On Windows</h3><p>You will have support for EncFS on Windows, but it is in my opinion (significantly) poorer than on any *nix operation system.</p>
+<p>In the past I went with <a href="http://members.ferrara.linux.it/freddy77/encfs.html" target="_blank" rel="external">encfs4win</a> (which requires <a href="http://dokan-dev.github.io/" target="_blank" rel="external">Dokan</a>), but my current favourite is <a href="https://github.com/safeapp/safe" target="_blank" rel="external">Safe</a>.</p>
+<p>It is an application with a simple GUI. Just point to the encrypted folder, enter the password and it will attach a WebDAV drive with the decrypted content.</p>
+<p>Happy encrypting!</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

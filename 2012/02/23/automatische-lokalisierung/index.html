@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Automatische Lokalisierung | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Automatische Lokalisierung</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2012-02-23T05:00:00.000Z"> Thursday, February 23rd 2012</time></span><p>Durch die verschiedenen <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx" target="_blank" rel="external">DataAnnotation-Attribute</a> ist die Lokalisierung bzw. Anzeige einer benutzerfreundlichen Beschriftung von Properties in ASP.NET-Anwendungen so einfach wie nie zuvor.</p>
+<p>Model:</p>
+<pre><code>public class FooViewModel
+{
+    public string Bar { get; set; }
+}
+</code></pre><p>View:</p>
+<pre><code>&lt;div class=&quot;control-group&quot;&gt;        
+    @Html.LabelFor(model =&gt; model.Bar)
+    &lt;div class=&quot;controls&quot;&gt;            
+        @Html.EditorFor(model =&gt; model.Bar)
+        @Html.ValidationMessageFor(model =&gt; model.Bar)
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>Die Zeile <code>@Html.LabelFor(model =&gt; model.Bar)</code> sorgt dafür, das der Name der Property an diese Stelle gerendert wird:</p>
+<pre><code>&lt;div class=&quot;control-group&quot;&gt;        
+    &lt;label for=&quot;Bar&quot;&gt;Bar&lt;/label&gt;
+    &lt;div class=&quot;controls&quot;&gt;            
+        ...
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>Falls für eine Property ein vom Namen abweichender Text angezeigt werden soll, kann dieser mittels über das <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.displaynameattribute.aspx" target="_blank" rel="external">DisplayName-Attributs</a> eingegeben werden:</p>
+<pre><code>public class FooViewModel
+{
+    [DisplayName(&quot;Foo&quot;)]
+    public string Bar { get; set; }
+}
+</code></pre><p>Soll der angezeigte Text abhängig von der aktuellen Sprache variieren, ist es möglich mit dem <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.displayattribute.aspx" target="_blank" rel="external">Display-Attribut</a> auf Ressourcen zuzugreifen:</p>
+<pre><code>public class FooViewModel
+{
+    [Display(ResourceType = typeof(Labels), Name = &quot;Foo&quot;)]
+    public string Bar { get; set; }
+}
+</code></pre><p>Möchte man auf sämtliche Attribute verzichten, aber dennoch schöne und vielleicht sogar lokalisierte Beschriftungen haben, besteht die Möglichkeit einen eigenen <a href="http://msdn.microsoft.com/en-us/library/system.web.mvc.modelmetadataprovider.aspx" target="_blank" rel="external">ModelMetadataProvider</a> zu implementieren bzw. vom bestehenden abzuleiten.</p>
+<pre><code>public class LocalizedModelMetadataProvider
+  : DataAnnotationsModelMetadataProvider
+{
+    protected override ModelMetadata CreateMetadata(
+        IEnumerable&lt;Attribute&gt; attributes,
+        Type containerType,
+        Func&lt;object&gt; modelAccessor,
+        Type modelType,
+        string propertyName)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return base.CreateMetadata(
+                attributes,
+                containerType,
+                modelAccessor,
+                modelType,
+                propertyName);
+        }
+
+        var newAttributes = new List&lt;Attribute&gt;(attributes);
+
+        if (newAttributes.All(
+            x =&gt; x.GetType() != typeof(DisplayNameAttribute)))
+        {
+            var value = Labels.ResourceManager.GetString(propertyName);
+
+            if (!string.IsNullOrEmpty(value))
+            {
+                var attribute = new DisplayNameAttribute(value);
+                newAttributes.Add(attribute);
+            }    
+        }
+
+        return base.CreateMetadata(
+            newAttributes,
+            containerType,
+            modelAccessor,
+            modelType,
+            propertyName);
+    }
+}
+</code></pre><p>Hierbei wird für alle Properties, die bislang kein DisplayName-Attribut haben, ein korrespondierender String (Ressourcenname gleich Propertyname) aus der Ressourcendatei Labels geladen.</p>
+<p>Die Registrierung eines eigenen ModelMetadataProvider erfolgt vorzugsweise im <code>Application_Start</code>-Event in der Global.asax.</p>
+<pre><code>protected void Application_Start()
+{
+    ModelMetadataProviders.Current =
+        new LocalizedModelMetadataProvider();
+}
+</code></pre></article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

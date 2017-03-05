@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Use IIS pickup directory with Nodemailer | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Use IIS pickup directory with Nodemailer</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2013-12-28T05:00:00.000Z"> Saturday, December 28th 2013</time></span><p>In the ASP.NET ecosystem I often make use of the <a href="http://msdn.microsoft.com/en-us/library/ms164241(v=vs.110" target="_blank" rel="external">IIS pickup directory</a>.aspx). It’s easy, it’s free. Period.</p>
+<p>When installing <a href="https://ghost.org/" target="_blank" rel="external">Ghost</a> you will always get bothered by a message on the login screen saying something like <code>mimimi... no smtp server configured</code>.</p>
+<p>Unfortunately <a href="http://www.nodemailer.com/" target="_blank" rel="external">Nodemailer</a>, the mailing library used by Ghost, does not support my beloved pickup directory and a 3rd party service was not very satisfying. It’s just a simple blog!</p>
+<p>Well… I <a href="https://github.com/philipproplesch/Nodemailer" target="_blank" rel="external">forked</a> the repository and introduced a new <a href="https://github.com/philipproplesch/Nodemailer/blob/master/lib/engines/pickup-directory.js" target="_blank" rel="external">transport object</a> which stores the generated mail in a directory of your choice :)</p>
+<h3 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h3><p>As of version 0.6.0 it is part of Nodemailer. Have a look at the <a href="https://github.com/andris9/Nodemailer/blob/master/README.md#setting-up-pickup" target="_blank" rel="external">README</a> for details.</p>
+<pre><code>var transport = nodemailer.createTransport(&apos;PICKUP&apos;, {
+  directory: &apos;path/to/mails&apos;
+});
+
+// or
+
+var transport = nodemailer.createTransport(&apos;PICKUP&apos;, &apos;path/to/mails&apos;);
+</code></pre><h2 id="Configure-Ghost-to-use-the-pickup-directory"><a href="#Configure-Ghost-to-use-the-pickup-directory" class="headerlink" title="Configure Ghost to use the pickup directory"></a>Configure Ghost to use the pickup directory</h2><p>After creating a backup and applying the necassary changes, this is how Ghosts’s <code>config.js</code> looks on my machine:</p>
+<pre><code>production: {
+  url: &apos;http://philipproplesch.de&apos;,
+  mail: {
+    transport: &apos;PICKUP&apos;,
+    options: {                
+      directory: &apos;path/to/mails&apos;
+    }
+  },
+  ...
+</code></pre><p>Here is a mail that has been sent via the pickup directory after requesting a new password:</p>
+<p><img src="/images/ghost_pw_reset_PNG.png" alt="Password reset mail"></p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

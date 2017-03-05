@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Let Grunt install your dependencies | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Let Grunt install your dependencies</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2013-12-13T05:00:00.000Z"> Friday, December 13th 2013</time></span><p>I am currently working on a <a href="http://en.wikipedia.org/wiki/Single-page_application" target="_blank" rel="external">Single Page Application</a> and use <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a> for build and task automation. Since new dependencies are added from time to time (either through <code>npm</code> or <code>bower</code>), we also have to make sure that these are present on the CI server.</p>
+<p>I am not a huge fan of configuring the build in multiple places (build script, CI server, here and there), therefore I have created the following tasks which make use of the <a href="http://nodejs.org/api/child_process.html" target="_blank" rel="external"><code>exec</code> method</a>.</p>
+<pre><code>// http://gruntjs.com/creating-tasks#why-doesn-t-my-asynchronous-task-complete
+var executeCommand = function(command, callback) {      
+  var exec = require(&apos;child_process&apos;).exec;
+
+  exec(command, function(error, stdout, stderr) {
+    console.log(stdout);
+    callback();
+  });
+};
+
+grunt.registerTask(&apos;install-npm-dependencies&apos;, function() {
+  var done = this.async();
+  executeCommand(&apos;npm install&apos;, done);
+});
+
+grunt.registerTask(&apos;install-bower-dependencies&apos;, function() {
+  var done = this.async();
+  executeCommand(&apos;bower install&apos;, done);
+});
+</code></pre><p>Afterwards your can add them your actual build task.</p>
+<pre><code>grunt.registerTask(&apos;continous-build&apos;, [
+  &apos;install-npm-dependencies&apos;,
+  &apos;install-bower-dependencies&apos;,
+  &apos;build&apos;
+]);
+</code></pre></article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

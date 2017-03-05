@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>philip { proplesch }</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://philipproplesch.de/"/>
+  <updated>2017-03-05T03:22:33.000Z</updated>
+  <id>http://philipproplesch.de/</id>
+  
+  <author>
+    <name>Philip Proplesch</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Update the dotnet CLI on OSX</title>
+    <link href="http://philipproplesch.de/2016/05/22/update-the-dotnet-cli-on-osx/"/>
+    <id>http://philipproplesch.de/2016/05/22/update-the-dotnet-cli-on-osx/</id>
+    <published>2016-05-22T04:00:00.000Z</published>
+    <updated>2017-03-05T03:22:33.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Microsoft has recently released new versions of .NET Core, ASP.NET Core and the development tools.</p>
+<p>If you were playing around with earlier builds of the <code>dotnet</code> CLI and you want <em>(it is not really a question of whether you want or not ;))</em> to upgrade to the new version you have to remove all traces of any installed versions first.</p>
+<p>Luckily Microsoft provides a simple script that we can execute as follows:</p>
+<pre><code># Get elevated privileges
+sudo su
+
+# Download and execute the uninstall script
+curl -s https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/uninstall/dotnet-uninstall-pkgs.sh | bash
+</code></pre><p>Afterwards you can <a href="https://dotnetcli.blob.core.windows.net/dotnet/preview/Installers/Latest/dotnet-dev-osx-x64.latest.pkg" target="_blank" rel="external">download and install the latest package</a> which is linked on the <a href="https://github.com/dotnet/cli/" target="_blank" rel="external">GitHub page</a>.</p>
+<p>Executing <code>dotnet --info</code> or <code>dotnet --version</code> should return the correct version number now:</p>
+<pre><code>dotnet --info
+.NET Command Line Tools (1.0.0-preview2-002820)
+
+Product Information:
+Version:            1.0.0-preview2-002820
+Commit SHA-1 hash:  d307537eb8
+
+Runtime Environment:
+OS Name:     Mac OS X
+OS Version:  10.11
+OS Platform: Darwin
+RID:         osx.10.11-x64
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Microsoft has recently released new versions of .NET Core, ASP.NET Core and the development tools.&lt;/p&gt;
+&lt;p&gt;If you were playing around with
+    
+    </summary>
+    
+    
+      <category term=".net core" scheme="http://philipproplesch.de/tags/net-core/"/>
+    
+      <category term="cli" scheme="http://philipproplesch.de/tags/cli/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Transfer a .DE domain to Namecheap</title>
+    <link href="http://philipproplesch.de/2016/02/16/transfer-a-de-domain-to-namecheap/"/>
+    <id>http://philipproplesch.de/2016/02/16/transfer-a-de-domain-to-namecheap/</id>
+    <published>2016-02-16T05:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>I was recently <em>forced</em> to transfer a <a href="https://en.wikipedia.org/wiki/.de" target="_blank" rel="external">.DE domain</a> to another registrar. No big deal, right? Just get the authorization code and transfer the domain.</p>
+<p>Unfortunately most of the major (probably non-German?) domain registrars (like <a href="https://ca.godaddy.com/" target="_blank" rel="external">GoDaddy</a> or <a href="https://www.namecheap.com/" target="_blank" rel="external">Namecheap</a>) do support new registrations for .DE domains, but <strong>not</strong> the transfer of an existing one which is obviously a major drawback for me in this case. </p>
+<p><a href="https://ca.godaddy.com/help/about-de-domain-names-5825" target="_blank" rel="external">GoDaddy does currently not support the transfer of .DE domains</a>. Namecheap does not mention anything in this matter on their website, so I asked them:</p>
+<p><blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/philipproplesch" target="_blank" rel="external">@philipproplesch</a> Our Transfer Concierge Team can submit a DE transfer manually for you. Please contact us in live chats or submit a ticket</p>&mdash; Namecheap.com (@Namecheap) <a href="https://twitter.com/Namecheap/status/697938636541706240" target="_blank" rel="external">February 12, 2016</a></blockquote></p>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>Luckily they provide a manual option, so I was able to chat with them and initiate the process. The conversation was very smooth and the domain showed up in my domain list on the next day.</p>
+<p>In theory the process should end here, but *sigh* the Namecheap nameservers do not comply with the requirements of the <a href="https://www.denic.de/en/" target="_blank" rel="external">DENIC</a> / <a href="https://www.denic.de/en/service/tools/nast/" target="_blank" rel="external">NAST test tool</a>. I guess I could have found out about this earlier, but I just did not expect this to be an issue at all. Lesson learned!</p>
+<p>To bring this story to an end… The nameservers provided by <a href="https://www.rackspace.com/cloud/dns" target="_blank" rel="external">Rackspace Cloud DNS</a> are not compatible either, but luckily <a href="https://www.cloudflare.com/" target="_blank" rel="external">Cloudflare</a> (I am on the free plan) works great and provides a slick and easy-to-use user interface.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;I was recently &lt;em&gt;forced&lt;/em&gt; to transfer a &lt;a href=&quot;https://en.wikipedia.org/wiki/.de&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;.DE domain&lt;/a&gt; to
+    
+    </summary>
+    
+    
+      <category term="domains" scheme="http://philipproplesch.de/tags/domains/"/>
+    
+      <category term="dns" scheme="http://philipproplesch.de/tags/dns/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Almost cross-platform EncFS</title>
+    <link href="http://philipproplesch.de/2015/11/08/almost-cross-platform-encfs/"/>
+    <id>http://philipproplesch.de/2015/11/08/almost-cross-platform-encfs/</id>
+    <published>2015-11-08T05:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>As most people I have a whole bunch of data stored on <em>&lt;insert your preferred cloud storage provider here&gt;</em> and naturally some of these files contain sensitive data.</p>
+<p>I am not paranoid and I am definitely not the kind of person who wears a tinfoil hat, but in times where pretty much every device is connected to the internet I sleep better knowing that my data belongs to me &mdash; <strong>only me!</strong></p>
+<h2 id="The-easy-way"><a href="#The-easy-way" class="headerlink" title="The easy way"></a>The easy way</h2><p>The all-in-one solution would be <a href="https://www.boxcryptor.com/en" target="_blank" rel="external">Boxcryptor</a> which makes EncFS available to Windows and OSX users and even provides apps for OS X and Android.</p>
+<h2 id="The-hard-way"><a href="#The-hard-way" class="headerlink" title="The hard way"></a>The hard way</h2><p>Honestly I don’t really need to access the files on the go, so smartphone or tablet access is of no priority for me right now.</p>
+<h3 id="On-OS-X"><a href="#On-OS-X" class="headerlink" title="On OS X"></a>On OS X</h3><p>In order to get EncFS up and running on OS X make sure that <a href="http://brew.sh/" target="_blank" rel="external">Homebrew</a> is installed on your machine.</p>
+<p>Execute the following commands in a Terminal window and you are good to go:</p>
+<pre><code>brew update
+brew install homebrew/fuse/encfs
+</code></pre><p>After this you can start to use the <code>encfs</code> command:</p>
+<pre><code>encfs ~/path/to/my/encrypted/data ~/decrypted
+</code></pre><p>If you run this for the first time it will guide you through the initialization process. When you went through this before you just have to enter your password and can browse your files in <code>~/decrypted</code>.</p>
+<p>When working with the decrpyted files in your folder you might run into this error when you try to open a file.</p>
+<p><img src="/images/Screen-Shot-2015-11-08-at-7-13-49-PM.png" alt="File is damaged and can&#39;t be opened"></p>
+<p>Don’t worry! Your file will be most likely OK, but OS X has added a flag which prevents it from getting opened. Running the following once in a while should resolve the issue:</p>
+<pre><code>xattr -r -d com.apple.quarantine ~/decrypted
+</code></pre><h3 id="On-Windows"><a href="#On-Windows" class="headerlink" title="On Windows"></a>On Windows</h3><p>You will have support for EncFS on Windows, but it is in my opinion (significantly) poorer than on any *nix operation system.</p>
+<p>In the past I went with <a href="http://members.ferrara.linux.it/freddy77/encfs.html" target="_blank" rel="external">encfs4win</a> (which requires <a href="http://dokan-dev.github.io/" target="_blank" rel="external">Dokan</a>), but my current favourite is <a href="https://github.com/safeapp/safe" target="_blank" rel="external">Safe</a>.</p>
+<p>It is an application with a simple GUI. Just point to the encrypted folder, enter the password and it will attach a WebDAV drive with the decrypted content.</p>
+<p>Happy encrypting!</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;As most people I have a whole bunch of data stored on &lt;em&gt;&amp;lt;insert your preferred cloud storage provider here&amp;gt;&lt;/em&gt; and naturally so
+    
+    </summary>
+    
+    
+      <category term="security" scheme="http://philipproplesch.de/tags/security/"/>
+    
+      <category term="encryption" scheme="http://philipproplesch.de/tags/encryption/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NETUG: Einführung in Machine Learning</title>
+    <link href="http://philipproplesch.de/2014/11/10/netug-einfuhrung-in-machine-learning/"/>
+    <id>http://philipproplesch.de/2014/11/10/netug-einfuhrung-in-machine-learning/</id>
+    <published>2014-11-10T05:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Am 20.11. haben wir <a href="http://www.navision-blog.de/blog/" target="_blank" rel="external">Steffen Forkmann</a> mit einem Workshop zum Thema “Machine Learning” in Wuppertal zu Gast.</p>
+<blockquote>
+<p>„Maschinelles Lernen“ ist die Kunst Programme zu schreiben die Wissen aus Erfahrung generieren können.<br>Das heißt wir füttern unser Programm mit Beispielen und es kann nach der Lernphase selbstständig verallgemeinern und das Wissen auf neue Situationen anwenden. </p>
+<p>Einige Machine Learning Algorithmen erfordern ein hohes Maß an mathematischer Erfahrung, aber einfache Ansätze können bereits überraschend effektiv sein. In diesem interaktiven Workshop werden wir gemeinsam versuchen eine Klassifizierungsaufgabe zu lösen.</p>
+<p>Kein besonderes Vorwissen ist nötig (auch nicht von F#), aber ein Laptop mit installiertem F# und Xamarin Studio, MonoDevelop oder Visual Studio ist von Vorteil. Eine Installationsanleitung für Windows, Linux und MacOS ist auf <a href="http://fsharp.org/" target="_blank" rel="external">fsharp.org</a> zu finden.</p>
+</blockquote>
+<p>Die Anmeldung ist wie üblich über <a href="http://netug-niederrhein.de/" target="_blank" rel="external">netug-niederrhein.de</a> möglich.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Am 20.11. haben wir &lt;a href=&quot;http://www.navision-blog.de/blog/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Steffen Forkmann&lt;/a&gt; mit einem Workshop zu
+    
+    </summary>
+    
+    
+      <category term="usergroup" scheme="http://philipproplesch.de/tags/usergroup/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>#nrwconf 2014 - Wir sehen uns in Wuppertal!</title>
+    <link href="http://philipproplesch.de/2014/08/25/nrwconf-2014-wir-sehen-uns-in-wuppertal/"/>
+    <id>http://philipproplesch.de/2014/08/25/nrwconf-2014-wir-sehen-uns-in-wuppertal/</id>
+    <published>2014-08-25T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/nrwconf2014.gif" alt="NRW Conf 2014 - Community rocks IT"></p>
+<p>Wenn die <a href="http://nrwconf.de/de/" target="_blank" rel="external">NRW Conf</a> am 12.09. zum x-ten Male ihre Pforten öffnet werde ich mit einer Session zum Thema “ASP.NET vNext” von der Partie sein.</p>
+<blockquote>
+<p>Mit ASP.NET vNext steht seit einigen Monaten eine Vorschau dessen zur Verfügung, was möglicherweise in naher Zukunft den Alltag eines jeden ASP.NET-Entwicklers bestimmt. Ziel von ASP.NET vNext ist es ein leichtgewichtiges Framework zu schaffen, welches auf einer Vielzahl von Plattformen gehostet werden kann. Wie fange ich an? Was geht bereits? Welches Tooling steht zur Verfügung? All diese Fragen sollen in dieser Session geklärt werden.</p>
+</blockquote>
+<p>Ich freue mich viele bekannte Gesichter in Wuppertal zu treffen.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/images/nrwconf2014.gif&quot; alt=&quot;NRW Conf 2014 - Community rocks IT&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Wenn die &lt;a href=&quot;http://nrwconf.de/de/&quot; target=&quot;_bla
+    
+    </summary>
+    
+    
+      <category term="conference" scheme="http://philipproplesch.de/tags/conference/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AngularJS: Observe multiple variables with $watch()</title>
+    <link href="http://philipproplesch.de/2014/04/26/angularjs-observe-multiple-variables-with-watch/"/>
+    <id>http://philipproplesch.de/2014/04/26/angularjs-observe-multiple-variables-with-watch/</id>
+    <published>2014-04-26T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>If you want to observe a variable this can be done easily by using the <a href="http://docs.angularjs.org/api/ng/type/$rootScope.Scope#$watch" target="_blank" rel="external"><code>$watch</code> function</a>.</p>
+<pre><code>$scope.$watch(&apos;foo&apos;, function(value) {
+  // will be triggered when $scope.foo will be changed
+});
+</code></pre><p>In order to observe multiple properties all you need to do is concatenate them with a <code>+</code>.</p>
+<pre><code>$scope.$watch(&apos;foo + bar&apos;, function(value) {
+  //  do something if $scope.foo or $scope.bar changes
+});
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;If you want to observe a variable this can be done easily by using the &lt;a href=&quot;http://docs.angularjs.org/api/ng/type/$rootScope.Scope#$w
+    
+    </summary>
+    
+    
+      <category term="angularjs" scheme="http://philipproplesch.de/tags/angularjs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Atlassian Stash - Add Pull Request reviewers automatically</title>
+    <link href="http://philipproplesch.de/2014/04/26/atlassian-stash-add-pull-request-reviewers-automatically/"/>
+    <id>http://philipproplesch.de/2014/04/26/atlassian-stash-add-pull-request-reviewers-automatically/</id>
+    <published>2014-04-26T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Though there are solutions to configure predefined Pull Request reviewers for a project in <a href="https://www.atlassian.com/software/stash" target="_blank" rel="external">Stash</a>, this might become handy for people without the permissions to configure such a thing.</p>
+<pre><code>// ==UserScript==
+// @name       Set reviewers for a pull request in Stash
+// @namespace  http://foo.bar/
+// @version    0.1
+// @description  
+// @match      */projects/*/repos/*/pull-requests?create
+// @copyright
+// ==/UserScript==
+
+document.getElementById(&apos;reviewers&apos;).value = &apos;johndoe|!|maxmustermann&apos;;    
+alert(&apos;Reviewers added...&apos;);
+</code></pre><p>You just have to add the user names of the reviewers separated by <code>|!|</code>.</p>
+<p>This will also work as a <a href="http://mrcoles.com/bookmarklet/" target="_blank" rel="external">bookmarklet</a>.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Though there are solutions to configure predefined Pull Request reviewers for a project in &lt;a href=&quot;https://www.atlassian.com/software/st
+    
+    </summary>
+    
+    
+      <category term="bitbucket server" scheme="http://philipproplesch.de/tags/bitbucket-server/"/>
+    
+      <category term="git" scheme="http://philipproplesch.de/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ngRepeat without parent element</title>
+    <link href="http://philipproplesch.de/2014/03/30/ngrepeat-without-parent-element/"/>
+    <id>http://philipproplesch.de/2014/03/30/ngrepeat-without-parent-element/</id>
+    <published>2014-03-30T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>I’m working on an <a href="http://angularjs.org/" target="_blank" rel="external">AngularJS</a>-driven Single Page Application for a couple of months now and have to admit that it’s a framework I really enjoy working with. That does not happen very often ;)</p>
+<hr>
+<p>Imagine you want to repeat a list of a certain type (posts, comments, whatever).</p>
+<p>With AngularJS you usually make use of the built-in <a href="http://docs.angularjs.org/api/ng/directive/ngRepeat" target="_blank" rel="external">ngRepeat directive</a> as in the following example:</p>
+<pre><code>&lt;article ng-repeat=&quot;post in posts&quot;&gt;
+  &lt;h1 ng-bind=&quot;post.title&quot; /&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+</code></pre><p>The ouput will look similar to this:</p>
+<pre><code>&lt;article&gt;
+  &lt;h1&gt;Hello world!&lt;/h1&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+
+&lt;article&gt;
+  &lt;h1&gt;AngularJS is awesome!&lt;/h1&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+
+&lt;article&gt;
+  &lt;h1&gt;I see dead people :/&lt;/h1&gt;
+  &lt;!-- ... --&gt;
+&lt;/article&gt;
+
+&lt;!-- and so on... --&gt;
+</code></pre><p>As you might noticed the ngRepeat directive sits on the <code>&lt;article /&gt;</code> element which is great in most cases, but could be a problem if you don’t have a parent element.</p>
+<p>Let’s take a <a href="http://html5doctor.com/the-dl-element/" target="_blank" rel="external">definition list</a> with the following markup:</p>
+<pre><code>&lt;dl&gt;
+  &lt;dt&gt;Foo&lt;/dt&gt;
+  &lt;dd&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit.&lt;/dd&gt;
+  &lt;dt&gt;Bar&lt;/dt&gt;
+  &lt;dd&gt;Iste aperiam nesciunt enim dolorum dolores labore necessitatibus dolor?&lt;/dd&gt;
+&lt;/dl&gt;
+</code></pre><p><code>&lt;dt /&gt;</code> and <code>&lt;dd /&gt;</code> are the elements that should be repeated now, but putting the ngRepeat on the <code>&lt;dl /&gt;</code> wouldn’t make much sense because it will generate <em>n</em> separate lists (n = length of array).</p>
+<p>Fortunately there’s <del>an app</del> a <a href="http://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points" target="_blank" rel="external">solution for this in the framework</a> :)</p>
+<pre><code>&lt;dl&gt;
+  &lt;dt ng-repeat-start=&quot;definition in definitions&quot; ng-bind=&quot;definition.title&quot;&gt;&lt;/dt&gt;
+  &lt;dd ng-repeat-end=&quot;&quot; ng-bind=&quot;definition.text&quot;&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+</code></pre><p>Et voilà! See it in action on <a href="http://jsfiddle.net/philipproplesch/SHjy9/" target="_blank" rel="external">JSFiddle</a>.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;I’m working on an &lt;a href=&quot;http://angularjs.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AngularJS&lt;/a&gt;-driven Single Page Application for a coupl
+    
+    </summary>
+    
+    
+      <category term="angularjs" scheme="http://philipproplesch.de/tags/angularjs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Use IIS pickup directory with Nodemailer</title>
+    <link href="http://philipproplesch.de/2013/12/28/use-iis-pickup-directory-with-nodemailer/"/>
+    <id>http://philipproplesch.de/2013/12/28/use-iis-pickup-directory-with-nodemailer/</id>
+    <published>2013-12-28T05:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>In the ASP.NET ecosystem I often make use of the <a href="http://msdn.microsoft.com/en-us/library/ms164241(v=vs.110" target="_blank" rel="external">IIS pickup directory</a>.aspx). It’s easy, it’s free. Period.</p>
+<p>When installing <a href="https://ghost.org/" target="_blank" rel="external">Ghost</a> you will always get bothered by a message on the login screen saying something like <code>mimimi... no smtp server configured</code>.</p>
+<p>Unfortunately <a href="http://www.nodemailer.com/" target="_blank" rel="external">Nodemailer</a>, the mailing library used by Ghost, does not support my beloved pickup directory and a 3rd party service was not very satisfying. It’s just a simple blog!</p>
+<p>Well… I <a href="https://github.com/philipproplesch/Nodemailer" target="_blank" rel="external">forked</a> the repository and introduced a new <a href="https://github.com/philipproplesch/Nodemailer/blob/master/lib/engines/pickup-directory.js" target="_blank" rel="external">transport object</a> which stores the generated mail in a directory of your choice :)</p>
+<h3 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h3><p>As of version 0.6.0 it is part of Nodemailer. Have a look at the <a href="https://github.com/andris9/Nodemailer/blob/master/README.md#setting-up-pickup" target="_blank" rel="external">README</a> for details.</p>
+<pre><code>var transport = nodemailer.createTransport(&apos;PICKUP&apos;, {
+  directory: &apos;path/to/mails&apos;
+});
+
+// or
+
+var transport = nodemailer.createTransport(&apos;PICKUP&apos;, &apos;path/to/mails&apos;);
+</code></pre><h2 id="Configure-Ghost-to-use-the-pickup-directory"><a href="#Configure-Ghost-to-use-the-pickup-directory" class="headerlink" title="Configure Ghost to use the pickup directory"></a>Configure Ghost to use the pickup directory</h2><p>After creating a backup and applying the necassary changes, this is how Ghosts’s <code>config.js</code> looks on my machine:</p>
+<pre><code>production: {
+  url: &apos;http://philipproplesch.de&apos;,
+  mail: {
+    transport: &apos;PICKUP&apos;,
+    options: {                
+      directory: &apos;path/to/mails&apos;
+    }
+  },
+  ...
+</code></pre><p>Here is a mail that has been sent via the pickup directory after requesting a new password:</p>
+<p><img src="/images/ghost_pw_reset_PNG.png" alt="Password reset mail"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;In the ASP.NET ecosystem I often make use of the &lt;a href=&quot;http://msdn.microsoft.com/en-us/library/ms164241(v=vs.110&quot; target=&quot;_blank&quot; rel=
+    
+    </summary>
+    
+    
+      <category term="node.js" scheme="http://philipproplesch.de/tags/node-js/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Let Grunt install your dependencies</title>
+    <link href="http://philipproplesch.de/2013/12/13/let-grunt-install-your-dependencies/"/>
+    <id>http://philipproplesch.de/2013/12/13/let-grunt-install-your-dependencies/</id>
+    <published>2013-12-13T05:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>I am currently working on a <a href="http://en.wikipedia.org/wiki/Single-page_application" target="_blank" rel="external">Single Page Application</a> and use <a href="http://gruntjs.com/" target="_blank" rel="external">Grunt</a> for build and task automation. Since new dependencies are added from time to time (either through <code>npm</code> or <code>bower</code>), we also have to make sure that these are present on the CI server.</p>
+<p>I am not a huge fan of configuring the build in multiple places (build script, CI server, here and there), therefore I have created the following tasks which make use of the <a href="http://nodejs.org/api/child_process.html" target="_blank" rel="external"><code>exec</code> method</a>.</p>
+<pre><code>// http://gruntjs.com/creating-tasks#why-doesn-t-my-asynchronous-task-complete
+var executeCommand = function(command, callback) {      
+  var exec = require(&apos;child_process&apos;).exec;
+
+  exec(command, function(error, stdout, stderr) {
+    console.log(stdout);
+    callback();
+  });
+};
+
+grunt.registerTask(&apos;install-npm-dependencies&apos;, function() {
+  var done = this.async();
+  executeCommand(&apos;npm install&apos;, done);
+});
+
+grunt.registerTask(&apos;install-bower-dependencies&apos;, function() {
+  var done = this.async();
+  executeCommand(&apos;bower install&apos;, done);
+});
+</code></pre><p>Afterwards your can add them your actual build task.</p>
+<pre><code>grunt.registerTask(&apos;continous-build&apos;, [
+  &apos;install-npm-dependencies&apos;,
+  &apos;install-bower-dependencies&apos;,
+  &apos;build&apos;
+]);
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;I am currently working on a &lt;a href=&quot;http://en.wikipedia.org/wiki/Single-page_application&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Single Page App
+    
+    </summary>
+    
+    
+      <category term="javascript" scheme="http://philipproplesch.de/tags/javascript/"/>
+    
+      <category term="grunt" scheme="http://philipproplesch.de/tags/grunt/"/>
+    
+      <category term="ci" scheme="http://philipproplesch.de/tags/ci/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VS2013 kills IIS Express when stopping debugging</title>
+    <link href="http://philipproplesch.de/2013/11/30/vs2013-kills-iis-express-when-stopping-debugging/"/>
+    <id>http://philipproplesch.de/2013/11/30/vs2013-kills-iis-express-when-stopping-debugging/</id>
+    <published>2013-11-30T05:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>When developing web applications with Visual Studio 2013 I found it very annoying that the IIS Express gets killed as soon debugging is stopped.</p>
+<p>The reason for this seems to be <code>Edit and Continue</code>, which is enabled by default.</p>
+<p><img src="/images/vs2013_editcontinue_PNG.png" alt=""></p>
+<p>After disabling this feature IIS Express won’t stop :)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;When developing web applications with Visual Studio 2013 I found it very annoying that the IIS Express gets killed as soon debugging is s
+    
+    </summary>
+    
+    
+      <category term="visual studio" scheme="http://philipproplesch.de/tags/visual-studio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Running Ghost on IIS</title>
+    <link href="http://philipproplesch.de/2013/09/25/running-ghost-on-iis/"/>
+    <id>http://philipproplesch.de/2013/09/25/running-ghost-on-iis/</id>
+    <published>2013-09-25T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Running <a href="http://ghost.org/" target="_blank" rel="external">Ghost</a> on IIS is fairly simple. First of all you have to make sure that <a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a> and <a href="https://github.com/tjanczuk/iisnode" target="_blank" rel="external">iisnode</a> are installed on your machine.</p>
+<p>Follow the installation instructions in Ghost’s <code>README.md</code> and verify that the application pool has read and write permissions to the target directory.</p>
+<p>Add a web.config file to your application root and insert the following lines, which tells iisnode to use <code>index.js</code> as the startup file. The rewrite rule (<a href="http://www.iis.net/downloads/microsoft/url-rewrite" target="_blank" rel="external">URL Rewrite</a> should be installed as well!) is required to pipe all incoming requests through the <code>index.js</code> file and let Ghost process them.</p>
+<h4 id="web-config"><a href="#web-config" class="headerlink" title="web.config"></a>web.config</h4><pre><code>&lt;configuration&gt;
+  &lt;system.webServer&gt;
+    &lt;handlers&gt;
+      &lt;add name=&quot;iisnode&quot; path=&quot;index.js&quot; verb=&quot;*&quot; modules=&quot;iisnode&quot; /&gt;
+    &lt;/handlers&gt;
+    &lt;defaultDocument enabled=&quot;true&quot;&gt;
+      &lt;files&gt;
+        &lt;add value=&quot;index.js&quot; /&gt;
+      &lt;/files&gt;
+    &lt;/defaultDocument&gt;
+    &lt;rewrite&gt;
+      &lt;rules&gt;
+        &lt;rule name=&quot;Ghost&quot;&gt;
+          &lt;match url=&quot;/*&quot; /&gt;
+          &lt;conditions&gt;
+            &lt;add input=&quot;{PATH_INFO}&quot; pattern=&quot;.+\.js\/debug\/?&quot; negate=&quot;true&quot; /&gt;
+          &lt;/conditions&gt;          
+          &lt;action type=&quot;Rewrite&quot; url=&quot;index.js&quot; /&gt;
+        &lt;/rule&gt;
+      &lt;/rules&gt;
+    &lt;/rewrite&gt;
+    &lt;!--
+      See https://github.com/tjanczuk/iisnode/blob/master/src/samples/configuration/web.config for information regarding iisnode specific configuration options.
+    --&gt;
+    &lt;iisnode node_env=&quot;%node_env%&quot; loggingEnabled=&quot;false&quot; debuggingEnabled=&quot;false&quot; devErrorsEnabled=&quot;false&quot; /&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+</code></pre><p>Last but not least you have to modify <code>./core/server.js</code> <strong>OR</strong> your <code>./config.js</code>, because we don’t want to hook up another server on a different port beside IIS. Gladly iisnode provides the current port as an environment variable:</p>
+<p><img src="/images/env_port_PNG.png" alt="iisnode port"></p>
+<h4 id="config-js"><a href="#config-js" class="headerlink" title="./config.js"></a>./config.js</h4><pre><code>$environment: {        
+    server: {
+        host: &apos;127.0.0.1&apos;,
+        port: process.env.PORT
+    }
+},
+</code></pre><h4 id="Original-core-server-js"><a href="#Original-core-server-js" class="headerlink" title="Original ./core/server.js"></a>Original ./core/server.js</h4><pre><code>// ## Start Ghost App
+server.listen(        
+    ghost.config().server.port,
+    ghost.config().server.host,
+    function () {
+</code></pre><h4 id="Modified-core-server-js"><a href="#Modified-core-server-js" class="headerlink" title="Modified ./core/server.js"></a>Modified ./core/server.js</h4><pre><code>// ## Start Ghost App
+server.listen(        
+    typeof process.env[&apos;PORT&apos;] !== &apos;undefined&apos; 
+        ? process.env.PORT 
+        : ghost.config().server.port,
+    ghost.config().server.host,
+    function () {
+</code></pre><hr>
+<h4 id="DISCLAIMER"><a href="#DISCLAIMER" class="headerlink" title="DISCLAIMER:"></a>DISCLAIMER:</h4><p>Since I am not that familiar with Node.js, I am not sure if this is the way you should do it. Nevertheless it <a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html" target="_blank" rel="external">works on my machine(s)</a> pretty good.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Running &lt;a href=&quot;http://ghost.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Ghost&lt;/a&gt; on IIS is fairly simple. First of all you have to make sure 
+    
+    </summary>
+    
+    
+      <category term="iis" scheme="http://philipproplesch.de/tags/iis/"/>
+    
+      <category term="node.js" scheme="http://philipproplesch.de/tags/node-js/"/>
+    
+      <category term="ghost" scheme="http://philipproplesch.de/tags/ghost/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NETUG: Multithreading Design Patterns</title>
+    <link href="http://philipproplesch.de/2013/08/13/netug-multithreading-design-patterns/"/>
+    <id>http://philipproplesch.de/2013/08/13/netug-multithreading-design-patterns/</id>
+    <published>2013-08-13T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Nach einer etwas längeren Pause werden wir am 23. September <a href="http://www.postsharp.net/blog/author/Gael-Fraiteur" target="_blank" rel="external">Gael Fraiteur</a> bei der <a href="http://www.netug-niederrhein.de/" target="_blank" rel="external">netug-niederrhein</a> zu Gast haben.</p>
+<p>Sein Thema ist “Multithreading Design Patterns” und folgendes steht für den Abend auf der Agenda:</p>
+<blockquote>
+<p>Back in the 50s, programmers had a very hard time to deliver even the simplest features because they had to work at a very low level of abstraction. There was nothing as a variable, field or parameter – just registry or memory cells. After decades of advances in compiler and runtime technologies, people barely think about memory management anymore.</p>
+<p>Today, the industry is facing the same issue with multithreading. It is the use of low-level synchronization mechanisms that causes the notorious complexity of multithreaded applications. As in the 50s, we need to raise the level of abstraction to get back into productivity. In this session, we will see how design patterns, such as X or Y, can simplify multi-core development. We’ll see how programming languages are built around these patterns and how other .NET tools can help you implementing threading patterns without switching to a new language.</p>
+<ul>
+<li>Why do we need threading models?</li>
+<li>Characteristics of a threading model</li>
+<li>Enforcement and automation of threading model</li>
+<li>Thread Unsafe</li>
+<li>Transaction</li>
+<li>Immutable</li>
+<li>Reader-Writer Synchronized</li>
+<li>Actor model</li>
+</ul>
+</blockquote>
+<p>Ort des Geschehens ist die <a href="http://www.netzkern.de/" target="_blank" rel="external">netzkern AG</a> in Wuppertal. Die Anmeldung ist über <a href="http://www.netug-niederrhein.de/" target="_blank" rel="external">www.netug-niederrhein.de</a> oder <a href="https://www.facebook.com/events/1403525416531258/" target="_blank" rel="external">Facebook</a> möglich.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Nach einer etwas längeren Pause werden wir am 23. September &lt;a href=&quot;http://www.postsharp.net/blog/author/Gael-Fraiteur&quot; target=&quot;_blank&quot; 
+    
+    </summary>
+    
+    
+      <category term="usergroup" scheme="http://philipproplesch.de/tags/usergroup/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Alles was das Herz begehrt...</title>
+    <link href="http://philipproplesch.de/2012/10/24/alles-was-das-herz-begehrt/"/>
+    <id>http://philipproplesch.de/2012/10/24/alles-was-das-herz-begehrt/</id>
+    <published>2012-10-24T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>… jedenfalls das eines Web-Entwicklers ;)</p>
+<p>Wer sich mit der Entwicklung von Webapplikationen herumschlägt, sollte unbedingt <a href="http://jster.net/" target="_blank" rel="external">JSter</a> kennen.</p>
+<p><img src="/images/jster.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;… jedenfalls das eines Web-Entwicklers ;)&lt;/p&gt;
+&lt;p&gt;Wer sich mit der Entwicklung von Webapplikationen herumschlägt, sollte unbedingt &lt;a href
+    
+    </summary>
+    
+    
+      <category term="javascript" scheme="http://philipproplesch.de/tags/javascript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NETUG: SQL Server 2012</title>
+    <link href="http://philipproplesch.de/2012/07/03/netug-sql-server-2012/"/>
+    <id>http://philipproplesch.de/2012/07/03/netug-sql-server-2012/</id>
+    <published>2012-07-03T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Am Donnerstag, dem 05.07. haben wir <a href="http://kostjaklein.wordpress.com/" target="_blank" rel="external">Constantin Klein</a> aka Kostja in Wuppertal zu Gast. Beginn ist um 18:30 Uhr in den Räumlichkeiten der <a href="http://www.netzkern.de/" target="_blank" rel="external">netzkern AG</a>.</p>
+<blockquote>
+<p>Mit dem Release des SQL Server 2012 steht nun die nächste Major Version des Microsoft Datenbankservers zur Verfügung. Doch was sind die wichtigsten Neuerungen? Wo ergeben sich neue Lösungsszenarien und was ist insbesondere für Entwickler von Interesse? Diese Session soll einen kompakten Überblick über viele Neuerungen geben und dabei die Highlights für Entwickler besonders hervorheben.</p>
+<p>Constantin arbeitet als Anwendungsarchitekt und Entwickler bei der Freudenberg Forschungsdienste KG. Dort beschäftigt er sich hauptsächlich mit dem Design und der Entwicklung von Web-Informationssystemen und Datenbanken. Seit seinem Studium der Wirtschaftsinformatik gilt sein besonderes Interesse darüber hinaus allen aktuellen Themen im Microsoft .NET Umfeld, insbesondere aber dem Thema Softwarearchitektur.</p>
+<p>Er ist MCSD, MCITP Database Developer und MCPD Web + Enterprise Application Developer. 2010, 2011 und 2012 wurde er von Microsoft zum Most Valuable Professional (MVP) für SQL Server ernannt.</p>
+<p>Er engagiert sich zusätzlich im Vorstand des Just Community e.V. (<a href="http://www.justcommunity.de" target="_blank" rel="external">http://www.justcommunity.de</a>) und als Leiter der .NET User Group Frankfurt (<a href="http://www.dotnet-ug-frankfurt.de" target="_blank" rel="external">http://www.dotnet-ug-frankfurt.de</a>).</p>
+<p>Sein Blog finden Sie unter: <a href="http://kostjaklein.wordpress.comAm" target="_blank" rel="external">http://kostjaklein.wordpress.comAm</a> Donnerstag, dem 05.07. haben wir <a href="http://kostjaklein.wordpress.com/" target="_blank" rel="external">Constantin Klein</a> aka Kostja in Wuppertal zu Gast. Beginn ist um 18:30 Uhr in den Räumlichkeiten der <a href="http://www.netzkern.de/" target="_blank" rel="external">netzkern AG</a>.</p>
+<p>Mit dem Release des SQL Server 2012 steht nun die nächste Major Version des Microsoft Datenbankservers zur Verfügung. Doch was sind die wichtigsten Neuerungen? Wo ergeben sich neue Lösungsszenarien und was ist insbesondere für Entwickler von Interesse? Diese Session soll einen kompakten Überblick über viele Neuerungen geben und dabei die Highlights für Entwickler besonders hervorheben.</p>
+<p>Constantin arbeitet als Anwendungsarchitekt und Entwickler bei der Freudenberg Forschungsdienste KG. Dort beschäftigt er sich hauptsächlich mit dem Design und der Entwicklung von Web-Informationssystemen und Datenbanken. Seit seinem Studium der Wirtschaftsinformatik gilt sein besonderes Interesse darüber hinaus allen aktuellen Themen im Microsoft .NET Umfeld, insbesondere aber dem Thema Softwarearchitektur.</p>
+<p>Er ist MCSD, MCITP Database Developer und MCPD Web + Enterprise Application Developer. 2010, 2011 und 2012 wurde er von Microsoft zum Most Valuable Professional (MVP) für SQL Server ernannt.</p>
+<p>Er engagiert sich zusätzlich im Vorstand des Just Community e.V. (<a href="http://www.justcommunity.de" target="_blank" rel="external">http://www.justcommunity.de</a>) und als Leiter der .NET User Group Frankfurt (<a href="http://www.dotnet-ug-frankfurt.de" target="_blank" rel="external">http://www.dotnet-ug-frankfurt.de</a>).</p>
+<p>Sein Blog finden Sie unter: <a href="http://kostjaklein.wordpress.com" target="_blank" rel="external">http://kostjaklein.wordpress.com</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Am Donnerstag, dem 05.07. haben wir &lt;a href=&quot;http://kostjaklein.wordpress.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Constantin Klein&lt;/a&gt; aka K
+    
+    </summary>
+    
+    
+      <category term="usergroup" scheme="http://philipproplesch.de/tags/usergroup/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>System.Web.Optimization: Bundles in der web.config registrieren</title>
+    <link href="http://philipproplesch.de/2012/04/12/system-web-optimization-bundles-in-der-web-config-registrieren/"/>
+    <id>http://philipproplesch.de/2012/04/12/system-web-optimization-bundles-in-der-web-config-registrieren/</id>
+    <published>2012-04-12T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Ich habe in den letzten Tagen erstmals das “<a href="http://weblogs.asp.net/scottgu/archive/2011/11/27/new-bundling-and-minification-support-asp-net-4-5-series.aspx" target="_blank" rel="external">Bundling &amp; Minification</a>“-Feature in einem Projekt verwendet und bin bis dato eigentlich auch sehr zufrieden damit. Etwas unpraktisch finde ich allerdings die Tatsache, dass sämtliche Bundles hart im Code verdrahtet werden müssen.</p>
+<p>Auf GitHub findet sich nun ein kleines <a href="https://github.com/philipproplesch/Web.Optimization" target="_blank" rel="external">Repository</a> von mir, welches die Registrierung der Bundles in der web.config ermöglicht:</p>
+<pre><code>&lt;configSections&gt;
+  &lt;section name=&quot;web.optimization&quot; type=&quot;Web.Optimization.Configuration.OptimizationSection&quot; /&gt;
+&lt;/configSections&gt;
+
+&lt;web.optimization&gt;
+  &lt;bundles&gt;
+    &lt;bundle virtualPath=&quot;~/Content/css&quot; transform=&quot;System.Web.Optimization.CssMinify, System.Web.Optimization&quot;&gt;
+      &lt;content&gt;
+        &lt;!-- Add some single files --&gt;
+        &lt;add virtualPath=&quot;~/Content/Site.css&quot; /&gt;
+        &lt;add virtualPath=&quot;~/Content/Forms.css&quot; /&gt;
+        &lt;!-- Add a directory (and its subdirectories) --&gt;
+        &lt;add virtualPath=&quot;~/Content/Styles&quot; searchPattern=&quot;*.css&quot; searchSubdirectories=&quot;true&quot; /&gt;
+      &lt;/content&gt;
+    &lt;/bundle&gt;
+  &lt;/bundles&gt;
+&lt;/web.optimization&gt;
+</code></pre><p>Beim Start der Applikation müssen die Bundles lediglich via <code>RegisterConfigurationBundles()</code> registriert werden:</p>
+<pre><code>protected void Application_Start()
+{
+  // ...
+
+  BundleTable.Bundles.RegisterConfigurationBundles();
+}
+</code></pre><p>Vielleicht kann der ein oder andere ja etwas damit anfangen.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Ich habe in den letzten Tagen erstmals das “&lt;a href=&quot;http://weblogs.asp.net/scottgu/archive/2011/11/27/new-bundling-and-minification-supp
+    
+    </summary>
+    
+    
+      <category term="asp.net" scheme="http://philipproplesch.de/tags/asp-net/"/>
+    
+      <category term="asp.net mvc" scheme="http://philipproplesch.de/tags/asp-net-mvc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SQL Server: Ausgesperrt!</title>
+    <link href="http://philipproplesch.de/2012/04/12/sql-server-ausgesperrt/"/>
+    <id>http://philipproplesch.de/2012/04/12/sql-server-ausgesperrt/</id>
+    <published>2012-04-12T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Die Tage wollte ich eine neue Datenbank in meinem lokalen <a href="http://www.microsoft.com/en-us/sqlserver/default.aspx" target="_blank" rel="external">SQL Server</a> anlegen. Eigentlich keine wilde Sache: Management Studio auf, Verbindung mittels <strong>Windows Authentication</strong> herstellen, Datenbank anglegen, ggfs. Rechte vergeben, Management Studio zu. Fertig!</p>
+<p>Dieses Mal erhielt ich jedoch beim Versuch die Datenbank anzulegen die Meldung: <code>CREATE DATABASE permission denied in database &#39;master&#39;</code>.</p>
+<p><img src="/images/sql_no_permissions_1.png" alt=""></p>
+<p>Grund für dieses Problem war die Tatsache, dass mein Windows-User – warum auch immer – nicht mehr Mitglied der Rolle <strong>sysadmin</strong> war.</p>
+<p>Falls das Post-it mit dem Passwort des sa-Users nicht mehr am Monitor klebt, bleibt wahrscheinlich nur noch eine Neuinstallation. </p>
+<p>Alternativ könnte es auch mit den folgenden Schritten funktionieren:</p>
+<h4 id="Dienst-des-SQL-Server-beenden"><a href="#Dienst-des-SQL-Server-beenden" class="headerlink" title="Dienst des SQL Server beenden"></a>Dienst des SQL Server beenden</h4><p><img src="/images/sql_no_permissions_2.png" alt=""></p>
+<h4 id="Instanz-uber-die-Konsole-starten"><a href="#Instanz-uber-die-Konsole-starten" class="headerlink" title="Instanz über die Konsole starten"></a>Instanz über die Konsole starten</h4><p><img src="/images/sql_no_permissions_3.png" alt=""></p>
+<h4 id="In-einer-weiteren-Konsole-eine-Verbindung-zum-Server-herstellen"><a href="#In-einer-weiteren-Konsole-eine-Verbindung-zum-Server-herstellen" class="headerlink" title="In einer weiteren Konsole eine Verbindung zum Server herstellen"></a>In einer weiteren Konsole eine Verbindung zum Server herstellen</h4><p><img src="/images/sql_no_permissions_4.png" alt=""></p>
+<h4 id="Den-User-zur-oben-genannten-sysadmin-Rolle-hinzufugen"><a href="#Den-User-zur-oben-genannten-sysadmin-Rolle-hinzufugen" class="headerlink" title="Den User zur oben genannten sysadmin-Rolle hinzufügen"></a>Den User zur oben genannten <strong>sysadmin</strong>-Rolle hinzufügen</h4><p><img src="/images/sql_no_permissions_5.png" alt=""></p>
+<h4 id="Die-Stored-Procedure-mittels-GO-ausfuhren"><a href="#Die-Stored-Procedure-mittels-GO-ausfuhren" class="headerlink" title="Die Stored Procedure mittels GO ausführen"></a>Die Stored Procedure mittels <strong>GO</strong> ausführen</h4><p><img src="/images/sql_no_permissions_6.png" alt=""></p>
+<p>Abschließend die Konsolen schließen, den Dienst wieder starten und die Datenbank wie gewohnt anlegen.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Die Tage wollte ich eine neue Datenbank in meinem lokalen &lt;a href=&quot;http://www.microsoft.com/en-us/sqlserver/default.aspx&quot; target=&quot;_blank&quot;
+    
+    </summary>
+    
+    
+      <category term="sql server" scheme="http://philipproplesch.de/tags/sql-server/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cannot read configuration file because it exceeds the maximum file size</title>
+    <link href="http://philipproplesch.de/2012/04/02/cannot-read-configuration-file-because-it-exceeds-the-maximum-file-size/"/>
+    <id>http://philipproplesch.de/2012/04/02/cannot-read-configuration-file-because-it-exceeds-the-maximum-file-size/</id>
+    <published>2012-04-02T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/webconfig_size_exceeded_1.png" alt=""></p>
+<p>Standardmäßig beschränkt der <a href="http://www.iis.net/" target="_blank" rel="external">IIS</a> die maximale Dateigröße für *.config-Dateien auf 250KB. Wird dieses Limit überschritten, erscheint die abgebildete Fehlermeldung.</p>
+<p>In einem aktuellen Projekt sollten viele (sehr viele!) alte URLs <em>gerettet</em> werden und mittels <a href="http://www.iis.net/downloads/microsoft/url-rewrite" target="_blank" rel="external">URL Rewrite</a> auf die neuen, korrespondierenden Zielseiten weitergeleitet werden. Aufgrund der immensen Anzahl an Rewrites wurden die 250KB relativ schnell erreicht und auch die Auslagerung in eine eigene Datei via <em>configSource</em>-Attribut hat hier nicht helfen können.</p>
+<p>Die Lösung des Problems war ein einfacher Eintrag in der Registry, der unter <em>HKLM\SOFTWARE\Microsoft\InetStp\Configuration</em> angelegt werden musste. Klingt dreckig, funktioniert aber ;)</p>
+<p><img src="/images/webconfig_size_exceeded_2.png" alt=""></p>
+<p>Weitere Informationen zu diesem und weiteren IIS-relevanten Registryschlüsseln gibt es auf einer <a href="http://support.microsoft.com/kb/954864" target="_blank" rel="external">Support-Seite von Microsoft</a>.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/images/webconfig_size_exceeded_1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Standardmäßig beschränkt der &lt;a href=&quot;http://www.iis.net/&quot; target=&quot;_blank
+    
+    </summary>
+    
+    
+      <category term="asp.net" scheme="http://philipproplesch.de/tags/asp-net/"/>
+    
+      <category term="iis" scheme="http://philipproplesch.de/tags/iis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gängige Angriffe auf Webseiten vermeiden</title>
+    <link href="http://philipproplesch.de/2012/03/26/gaengige-angriffe-auf-webseiten-vermeiden/"/>
+    <id>http://philipproplesch.de/2012/03/26/gaengige-angriffe-auf-webseiten-vermeiden/</id>
+    <published>2012-03-26T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Das <a href="https://www.owasp.org/index.php/Main_Page" target="_blank" rel="external">OWASP</a> hat 2010 eine <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project" target="_blank" rel="external">Liste mit den Top 10 Sicherheitslücken von Webseiten/Webapplikationen</a> veröffentlicht (eine neuere Version existiert bis dato nicht):</p>
+<ul>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A1" target="_blank" rel="external">Injection</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A2" target="_blank" rel="external">Cross-Site Scripting (XSS)</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A3" target="_blank" rel="external">Broken Authentication and Session Management</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A4" target="_blank" rel="external">Insecure Direct Object References</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A5" target="_blank" rel="external">Cross-Site Request Forgery (CSRF)</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A6" target="_blank" rel="external">Security Misconfiguration</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A7" target="_blank" rel="external">Insecure Cryptographic Storage</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A8" target="_blank" rel="external">Failure to Restrict URL Access</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A9" target="_blank" rel="external">Insufficient Transport Layer Protection</a></li>
+<li><a href="https://www.owasp.org/index.php/Top_10_2010-A10" target="_blank" rel="external">Unvalidated Redirects and Forwards</a></li>
+</ul>
+<p><a href="http://www.troyhunt.com/" target="_blank" rel="external">Troy Hunt</a> hat kurz nach Erscheinen der Liste eine <a href="http://www.troyhunt.com/2010/05/owasp-top-10-for-net-developers-part-1.html" target="_blank" rel="external">Blogserie</a> gestartet, in der er all diese Themen innerhalb von ASP.NET- und ASP.NET MVC-Anwendungen thematisiert. <a href="http://www.troyhunt.com/2011/12/free-ebook-owasp-top-10-for-net.html" target="_blank" rel="external">Ein PDF, welches alle Artikel beinhaltet, kann hier heruntergeladen werden</a>.</p>
+<p>Definitiv lesenswert!</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Das &lt;a href=&quot;https://www.owasp.org/index.php/Main_Page&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OWASP&lt;/a&gt; hat 2010 eine &lt;a href=&quot;https://www.owasp
+    
+    </summary>
+    
+    
+      <category term="security" scheme="http://philipproplesch.de/tags/security/"/>
+    
+      <category term="owasp" scheme="http://philipproplesch.de/tags/owasp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NETUG: AOP mit .NET</title>
+    <link href="http://philipproplesch.de/2012/03/23/netug-aop-mit-net/"/>
+    <id>http://philipproplesch.de/2012/03/23/netug-aop-mit-net/</id>
+    <published>2012-03-23T04:00:00.000Z</published>
+    <updated>2017-02-25T19:41:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Am 12.04. bekommen wir Besuch von <a href="http://www.sharpcrafters.com/" target="_blank" rel="external">PostSharp</a> MVP <a href="http://blog.johanneshoppe.de/" target="_blank" rel="external">Johannes Hoppe</a>. Beginn ist um 18:30 in den Räumlichkeiten der <a href="http://www.autoonline.de/" target="_blank" rel="external">AUTOonline GmbH Informationssysteme</a> (<a href="http://goo.gl/maps/4U62G" target="_blank" rel="external">Karte</a>).</p>
+<blockquote>
+<p>Als Entwickler sind wir täglich bemüht hochwertigen und sauberen Code zu produzieren. Für viele Probleme kennen wir bewährte Patterns und Vorgehensweisen.<br>Doch manche Belange – wie etwa Logging, Exception Handling, Validierung oder Caching – liegen schnell unsauber verstreut im gesamten Projekt herum.</p>
+<p>Johannes Hoppe spricht von seiner Sicht über Clean-Code und die Grenzen von objektorientierter Programmierung. Anhand praktischer Bespiele zeigt er, wie man mit dem AOP-Framework Postsharp elegante Modularisierungsansätze erhält.</p>
+<p>Der Vortrag richtet sich an interessierte Einsteiger in das Thema AOP mit .NET.<br>Alle Beispiele können Anhand der ASP.NET MVC Demo-Applikation WebNoteAOP nachvollzogen werden.</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Am 12.04. bekommen wir Besuch von &lt;a href=&quot;http://www.sharpcrafters.com/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;PostSharp&lt;/a&gt; MVP &lt;a href=&quot;http:
+    
+    </summary>
+    
+    
+      <category term="usergroup" scheme="http://philipproplesch.de/tags/usergroup/"/>
+    
+  </entry>
+  
+</feed>

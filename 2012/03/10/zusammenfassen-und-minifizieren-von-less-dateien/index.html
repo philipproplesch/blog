@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Zusammenfassen und Minifizieren von .less-Dateien | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Zusammenfassen und Minifizieren von .less-Dateien</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2012-03-10T05:00:00.000Z"> Saturday, March 10th 2012</time></span><p>Vor ein paar Tagen habe ich hier über die neuen Möglichkeiten zur Zusammenfassung und Minifizierung von JavaScript- und CSS-Dateien mittels der neuen <a href="http://msdn.microsoft.com/en-us/library/system.web.optimization.bundle(v=vs.110" target="_blank" rel="external">System.Web.Optimization-Bundles</a>.aspx) geschrieben.</p>
+<p>Grundsätzlich eine feine Sache, allerdings werden lediglich CSS und JavaScript unterstützt. <a href="http://sass-lang.com/" target="_blank" rel="external">Sass</a>, <a href="http://lesscss.org/" target="_blank" rel="external">LESS</a>, <a href="http://coffeescript.org/" target="_blank" rel="external">CoffeeScript</a>, etc.? Fehlanzeige!</p>
+<p>Glücklicherweise lassen sich weitere <a href="http://msdn.microsoft.com/en-us/library/system.web.optimization.ibundletransform.aspx" target="_blank" rel="external">BundleTransform</a>er recht simpel implementieren.</p>
+<p>Hier ein Beispiel für LESS:</p>
+<pre><code>public class LessTransform : IBundleTransform
+{
+    public void Process(BundleContext context, BundleResponse response)
+    {
+        response.ContentType = &quot;text/css&quot;;
+        response.Content = Less.Parse(response.Content);
+    }
+}
+
+public class LessMinify : CssMinify
+{
+    public override void Process(BundleContext context, BundleResponse response)
+    {
+        new LessTransform().Process(context, response);
+        base.Process(context, response);
+    }
+}
+</code></pre><p>Die Verwendung sieht wie folgt aus:</p>
+<pre><code>protected void Application_Start()
+{
+    AreaRegistration.RegisterAllAreas();
+
+    RegisterGlobalFilters(GlobalFilters.Filters);
+    RegisterRoutes(RouteTable.Routes);
+
+#if DEBUG
+    var bundle   = new Bundle(&quot;~/Content/css&quot;, new LessTransform());
+#else
+    var bundle = new Bundle(&quot;~/Content/css&quot;, new LessMinify());
+#endif
+
+    bundle.AddFile(&quot;~/Content/Site.css&quot;, false);
+    bundle.AddFile(&quot;~/Content/Forms.less&quot;, false);
+    bundle.AddFile(&quot;~/Content/Another.less&quot;, false);
+
+    BundleTable.Bundles.Add(bundle);
+}
+</code></pre><p>Zum parsen der LESS-Dateien verwende ich <a href="http://www.dotlesscss.org/" target="_blank" rel="external">.less (dotless)</a>.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

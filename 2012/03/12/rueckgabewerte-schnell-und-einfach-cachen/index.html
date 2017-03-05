@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Rückgabewerte schnell und einfach cachen | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Rückgabewerte schnell und einfach cachen</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2012-03-12T04:00:00.000Z"> Monday, March 12th 2012</time></span><pre><code>public class UserService
+{
+     public User GetUserById(Guid id)
+     {
+         var cacheKey =
+             string.Concat(
+                 &quot;UserService.GetUserById.&quot;,
+                 id,
+                 &quot;.&quot;,
+                 Thread.CurrentThread.CurrentUICulture.Name);
+
+         var user = Cache.Get&lt;User&gt;(cacheKey);
+         if (user == null)
+         {
+             user = _repository.Get(id);
+
+             Cache.Set(cacheKey, user);
+         }
+
+         return user;
+     }
+}
+</code></pre><p>Viele Zeilen der Methode <code>GetUserById</code> entfallen in diesem Beispiel auf das obligatorische Cachegehampel (Zusammensetzen eines eindeutigen Cache-Keys, Instanz im Cache suchen, Instanz im Cache ablegen). Die eigentliche Logik ist recht überschaubar.</p>
+<p>Was kann man also tun, um diesen <em>Overhead</em> zu reduzieren?</p>
+<p>Eine Möglichkeit wäre z.B. das AOP-Framework <a href="http://www.sharpcrafters.com/" target="_blank" rel="external">PostSharp</a> und ein passender <a href="http://www.sharpcrafters.com/blog/post/solid-caching.aspx" target="_blank" rel="external">Cache-Aspekt</a>. Finde ich sehr interessant und werde ich mir bei Gelegenheit definitiv näher ansehen.</p>
+<p>Alternativ kann ein <em>ähnliches Verhalten</em> mit <a href="http://unity.codeplex.com/" target="_blank" rel="external">Unity</a> oder <a href="http://stw.castleproject.org/Default.aspx" target="_blank" rel="external">Castle Windsor</a> und deren Interceptoren erreicht werden.</p>
+<p>“Meine Lösung” sieht es momentan vor, dass ich den <a href="http://msdn.microsoft.com/en-us/library/system.runtime.caching.memorycache.aspx" target="_blank" rel="external">MemoryCache</a> (seit .NET 4.0 Bestandteil des Frameworks) und eine <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx" target="_blank" rel="external">Extension Method</a> verwende. Aus der oben gezeigten Klasse wird:</p>
+<pre><code>public class UserService
+{
+     public User GetUserById(Guid id)
+     {
+         return _repository.Get(id);
+     }
+}
+</code></pre><p>Der Zugriff auf die Methode könnte nun wie folgt aussehen:</p>
+<pre><code>var user = MemoryCache.Default.ValueFor(() =&gt; _userService.GetUserById(id));
+</code></pre><p><code>ValueFor()</code>-Extension Method:</p>
+<pre><code>public static class ObjectCacheExtensions
+{
+    public static T ValueFor&lt;T&gt;(
+       this ObjectCache cache,
+       Expression&lt;Func&lt;T&gt;&gt; expression,
+       CacheItemPolicy policy = null)
+    {
+        var call = expression.Body as MethodCallExpression;
+        if (call == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        var declaringType = call.Method.DeclaringType;
+        if (declaringType == null)
+        {
+            // Lambda?
+            throw new InvalidOperationException();
+        }
+
+        var type = declaringType.Name;
+        var method = call.Method.Name;
+
+        var arguments =
+            string.Join(
+                &quot;_&quot;,
+                call.Arguments.Select(
+                    x =&gt;
+                    Expression.Lambda(x).Compile().DynamicInvoke() ?? x));
+
+        var culture = Thread.CurrentThread.CurrentUICulture.Name;
+
+        var key =
+            string.Concat(type, &quot;_&quot;, method, &quot;_&quot;, arguments, &quot;_&quot;, culture);
+
+        var obj = cache[key];
+        if (obj == null)
+        {
+            if (policy == null)
+            {
+                // Default cache item policy
+
+                policy =
+                    new CacheItemPolicy
+                    {
+                        Priority = CacheItemPriority.Default,
+                        AbsoluteExpiration = DateTime.Now.AddMinutes(10)
+                    };
+            }
+
+            var function = expression.Compile();
+            obj = function();
+
+            if (obj != null)
+            {
+                cache.Add(new CacheItem(key, obj), policy);
+            }
+        }
+
+        return (T)obj;
+    }
+}
+</code></pre><p>Innerhalb der Extension Method wird nun ein Cache-Key auf Basis von Typname, Methodenname, Parametern und der aktuellen UI-Culture generiert. Wird das dazugehörige Objekt im Cache gefunden, wird es ohne Umwege zurückgegeben. Falls nicht, wird die übergebene Expression ausgeführt und dessen Rückgabewert unter dem generierten Cache-Key abgelegt.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

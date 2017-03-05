@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>System.Web.Optimization: Bundles in der web.config registrieren | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">System.Web.Optimization: Bundles in der web.config registrieren</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2012-04-12T04:00:00.000Z"> Thursday, April 12th 2012</time></span><p>Ich habe in den letzten Tagen erstmals das “<a href="http://weblogs.asp.net/scottgu/archive/2011/11/27/new-bundling-and-minification-support-asp-net-4-5-series.aspx" target="_blank" rel="external">Bundling &amp; Minification</a>“-Feature in einem Projekt verwendet und bin bis dato eigentlich auch sehr zufrieden damit. Etwas unpraktisch finde ich allerdings die Tatsache, dass sämtliche Bundles hart im Code verdrahtet werden müssen.</p>
+<p>Auf GitHub findet sich nun ein kleines <a href="https://github.com/philipproplesch/Web.Optimization" target="_blank" rel="external">Repository</a> von mir, welches die Registrierung der Bundles in der web.config ermöglicht:</p>
+<pre><code>&lt;configSections&gt;
+  &lt;section name=&quot;web.optimization&quot; type=&quot;Web.Optimization.Configuration.OptimizationSection&quot; /&gt;
+&lt;/configSections&gt;
+
+&lt;web.optimization&gt;
+  &lt;bundles&gt;
+    &lt;bundle virtualPath=&quot;~/Content/css&quot; transform=&quot;System.Web.Optimization.CssMinify, System.Web.Optimization&quot;&gt;
+      &lt;content&gt;
+        &lt;!-- Add some single files --&gt;
+        &lt;add virtualPath=&quot;~/Content/Site.css&quot; /&gt;
+        &lt;add virtualPath=&quot;~/Content/Forms.css&quot; /&gt;
+        &lt;!-- Add a directory (and its subdirectories) --&gt;
+        &lt;add virtualPath=&quot;~/Content/Styles&quot; searchPattern=&quot;*.css&quot; searchSubdirectories=&quot;true&quot; /&gt;
+      &lt;/content&gt;
+    &lt;/bundle&gt;
+  &lt;/bundles&gt;
+&lt;/web.optimization&gt;
+</code></pre><p>Beim Start der Applikation müssen die Bundles lediglich via <code>RegisterConfigurationBundles()</code> registriert werden:</p>
+<pre><code>protected void Application_Start()
+{
+  // ...
+
+  BundleTable.Bundles.RegisterConfigurationBundles();
+}
+</code></pre><p>Vielleicht kann der ein oder andere ja etwas damit anfangen.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>

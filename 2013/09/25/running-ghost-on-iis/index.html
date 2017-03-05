@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Running Ghost on IIS | philip { proplesch }</title><meta name="description"><meta name="generator" content="philip { proplesch }"><meta name="author" content="Philip Proplesch"><meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=0"><link rel="stylesheet" type="text/css" href="/styles/screen.css"><link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="atom.xml"></head><body itemscope itemtype="https://schema.org/WebPage"><header itemscope itemtype="https://schema.org/WPHeader"><a href="/"><img src="/images/me.jpg" alt="philip { proplesch }" title="philip { proplesch }" style="border-radius: 50px"></a><h1><a href="/" alt="philip { proplesch }" title="philip { proplesch }" itemprop="headline">philip { proplesch }</a></h1><p itemprop="description"></p><nav itemscope itemtype="https://schema.org/SiteNavigationElement"><ul><li itemprop="name"><a href="/" alt="Home" title="Home" itemprop="url">Home</a></li><li itemprop="name"><a href="/atom.xml" alt="Feed" title="Feed" itemprop="url">Feed</a></li></ul></nav><div class="space"></div></header><main itemscope itemtype="https://schema.org/Blog"><article class="full"><h1 itemprop="headline">Running Ghost on IIS</h1><span class="post-meta">Published on<time itemprop="datePublished" datetime="2013-09-25T04:00:00.000Z"> Wednesday, September 25th 2013</time></span><p>Running <a href="http://ghost.org/" target="_blank" rel="external">Ghost</a> on IIS is fairly simple. First of all you have to make sure that <a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a> and <a href="https://github.com/tjanczuk/iisnode" target="_blank" rel="external">iisnode</a> are installed on your machine.</p>
+<p>Follow the installation instructions in Ghost’s <code>README.md</code> and verify that the application pool has read and write permissions to the target directory.</p>
+<p>Add a web.config file to your application root and insert the following lines, which tells iisnode to use <code>index.js</code> as the startup file. The rewrite rule (<a href="http://www.iis.net/downloads/microsoft/url-rewrite" target="_blank" rel="external">URL Rewrite</a> should be installed as well!) is required to pipe all incoming requests through the <code>index.js</code> file and let Ghost process them.</p>
+<h4 id="web-config"><a href="#web-config" class="headerlink" title="web.config"></a>web.config</h4><pre><code>&lt;configuration&gt;
+  &lt;system.webServer&gt;
+    &lt;handlers&gt;
+      &lt;add name=&quot;iisnode&quot; path=&quot;index.js&quot; verb=&quot;*&quot; modules=&quot;iisnode&quot; /&gt;
+    &lt;/handlers&gt;
+    &lt;defaultDocument enabled=&quot;true&quot;&gt;
+      &lt;files&gt;
+        &lt;add value=&quot;index.js&quot; /&gt;
+      &lt;/files&gt;
+    &lt;/defaultDocument&gt;
+    &lt;rewrite&gt;
+      &lt;rules&gt;
+        &lt;rule name=&quot;Ghost&quot;&gt;
+          &lt;match url=&quot;/*&quot; /&gt;
+          &lt;conditions&gt;
+            &lt;add input=&quot;{PATH_INFO}&quot; pattern=&quot;.+\.js\/debug\/?&quot; negate=&quot;true&quot; /&gt;
+          &lt;/conditions&gt;          
+          &lt;action type=&quot;Rewrite&quot; url=&quot;index.js&quot; /&gt;
+        &lt;/rule&gt;
+      &lt;/rules&gt;
+    &lt;/rewrite&gt;
+    &lt;!--
+      See https://github.com/tjanczuk/iisnode/blob/master/src/samples/configuration/web.config for information regarding iisnode specific configuration options.
+    --&gt;
+    &lt;iisnode node_env=&quot;%node_env%&quot; loggingEnabled=&quot;false&quot; debuggingEnabled=&quot;false&quot; devErrorsEnabled=&quot;false&quot; /&gt;
+  &lt;/system.webServer&gt;
+&lt;/configuration&gt;
+</code></pre><p>Last but not least you have to modify <code>./core/server.js</code> <strong>OR</strong> your <code>./config.js</code>, because we don’t want to hook up another server on a different port beside IIS. Gladly iisnode provides the current port as an environment variable:</p>
+<p><img src="/images/env_port_PNG.png" alt="iisnode port"></p>
+<h4 id="config-js"><a href="#config-js" class="headerlink" title="./config.js"></a>./config.js</h4><pre><code>$environment: {        
+    server: {
+        host: &apos;127.0.0.1&apos;,
+        port: process.env.PORT
+    }
+},
+</code></pre><h4 id="Original-core-server-js"><a href="#Original-core-server-js" class="headerlink" title="Original ./core/server.js"></a>Original ./core/server.js</h4><pre><code>// ## Start Ghost App
+server.listen(        
+    ghost.config().server.port,
+    ghost.config().server.host,
+    function () {
+</code></pre><h4 id="Modified-core-server-js"><a href="#Modified-core-server-js" class="headerlink" title="Modified ./core/server.js"></a>Modified ./core/server.js</h4><pre><code>// ## Start Ghost App
+server.listen(        
+    typeof process.env[&apos;PORT&apos;] !== &apos;undefined&apos; 
+        ? process.env.PORT 
+        : ghost.config().server.port,
+    ghost.config().server.host,
+    function () {
+</code></pre><hr>
+<h4 id="DISCLAIMER"><a href="#DISCLAIMER" class="headerlink" title="DISCLAIMER:"></a>DISCLAIMER:</h4><p>Since I am not that familiar with Node.js, I am not sure if this is the way you should do it. Nevertheless it <a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html" target="_blank" rel="external">works on my machine(s)</a> pretty good.</p>
+</article></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='//www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-10099262-1');ga('send','pageview');</script></body></html>
