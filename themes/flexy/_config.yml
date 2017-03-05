@@ -1,0 +1,14 @@
+# config
+logo: /images/me.jpg
+menu:
+  Home: /
+  Feed: /atom.xml
+  #Articles: /articles
+  #About: /about
+
+# Content
+excerpt_link: Read more
+
+# Miscellaneous
+rss: /atom.xml
+google_analytics: UA-10099262-1

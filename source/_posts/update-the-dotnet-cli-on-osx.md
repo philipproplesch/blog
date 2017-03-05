@@ -21,17 +21,15 @@ Afterwards you can [download and install the latest package](https://dotnetcli.b
 
 Executing `dotnet --info` or `dotnet --version` should return the correct version number now:
 
-```
-dotnet --info
-.NET Command Line Tools (1.0.0-preview2-002820)
+    dotnet --info
+    .NET Command Line Tools (1.0.0-preview2-002820)
 
-Product Information:
- Version:            1.0.0-preview2-002820
- Commit SHA-1 hash:  d307537eb8
+    Product Information:
+    Version:            1.0.0-preview2-002820
+    Commit SHA-1 hash:  d307537eb8
 
-Runtime Environment:
- OS Name:     Mac OS X
- OS Version:  10.11
- OS Platform: Darwin
- RID:         osx.10.11-x64
-```
+    Runtime Environment:
+    OS Name:     Mac OS X
+    OS Version:  10.11
+    OS Platform: Darwin
+    RID:         osx.10.11-x64
